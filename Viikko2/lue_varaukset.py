@@ -37,8 +37,15 @@ def main():
     print("Varausnumero:", varausnumero)
     varaajannimi = varaus.split('|')[1]
     print("Varaaja:", varaajannimi)
-    paivamaara = datetime.strptime(varaus.split('|')[2], "%Y-%m-%d").date()
-    print
+    paivamaara = datetime.strptime(varaus.split('|')[2], ("%Y-%m-%d")).date()
+    print("Päivämäärä:",paivamaara.strftime("%d.%m.%Y"))
+    aloitusaika = datetime.strptime(varaus.split('|')[3], "%H:%M").time()
+    print("Aloitusaika:", aloitusaika.strftime("%H.%M"))
+    tuntimaara = int(varaus.split('|')[4])
+    print("Tuntimäärä:", tuntimaara)
+    tuntihinta = float(varaus.split('|')[5])
+    print("Tuntihinta:", tuntihinta, "€")
+
     """
     Edellisen olisi pitänyt tulostaa numeron 123, joka
     on oletuksena tekstiä.
