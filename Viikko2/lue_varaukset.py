@@ -26,7 +26,7 @@ def main():
         varaus = f.read().strip()
 
     # Tulostetaan varaus konsoliin
-    print(varaus)
+    # print(varaus)
 
     # Kokeile näitä
     #print(varaus.split('|'))
