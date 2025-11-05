@@ -1,3 +1,4 @@
+from datetime import datetime
 """
 Ohjelma joka lukee tiedostossa olevat varaustiedot
 ja tulostaa ne konsoliin. Alla esimerkkitulostus:
@@ -32,6 +33,12 @@ def main():
     #varausId = varaus.split('|')[0]
     #print(varausId)
     #print(type(varausId))
+    varausnumero = int(varaus.split('|')[0])
+    print("Varausnumero:", varausnumero)
+    varaajannimi = varaus.split('|')[1]
+    print("Varaaja:", varaajannimi)
+    paivamaara = datetime.strptime(varaus.split('|')[2], "%Y-%m-%d").date()
+    print
     """
     Edellisen olisi pitänyt tulostaa numeron 123, joka
     on oletuksena tekstiä.
