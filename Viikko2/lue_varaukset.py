@@ -45,6 +45,16 @@ def main():
     print("Tuntimäärä:", tuntimaara)
     tuntihinta = float(varaus.split('|')[5])
     print("Tuntihinta:", tuntihinta, "€")
+    kokonaishinta = tuntihinta*tuntimaara
+    print("Kokonaishinta:", kokonaishinta, "€")
+    maksettu = varaus.split('|')[6]
+    print(f"Maksettu: {"Kyllä"if maksettu else "Ei"}")
+    kohde = varaus.split('|')[7]
+    print("Kohde:", kohde)
+    puhelinnumero = varaus.split('|')[8]
+    print("Puhelinnumero:", puhelinnumero)
+    sahkoposti = varaus.split('|')[9]
+    print("Sähköposti:", sahkoposti)
 
     """
     Edellisen olisi pitänyt tulostaa numeron 123, joka
