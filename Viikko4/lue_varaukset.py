@@ -22,13 +22,8 @@ int | str | str | str | datetime.date | datetime.time | int | float | bool | str
 from datetime import datetime
 
 def muunna_varaustiedot(varaus: list) -> list:
-    # Tähän tulee siis varaus oletustietotyypeillä (str)
-    # Varauksessa on 11 saraketta -> Lista -> Alkiot 0-10
-    # Muuta tietotyypit haluamallasi tavalla -> Seuraavassa esimerkki ensimmäisestä alkioista
     muutettu_varaus = []
-    # Ensimmäisen alkion = varaus[0] muunnos
     muutettu_varaus.append(int(varaus[0]))
-    # Ja tästä jatkuu
     muutettu_varaus.append(str(varaus[1]))
     muutettu_varaus.append(str(varaus[2]))
     muutettu_varaus.append(str(varaus[3]))
@@ -43,8 +38,6 @@ def muunna_varaustiedot(varaus: list) -> list:
     
 
 def hae_varaukset(varaustiedosto: str) -> list:
-    # HUOM! Tälle funktioille ei tarvitse tehdä mitään!
-    # Jos muutat, kommentoi miksi muutit
     varaukset = []
     varaukset.append(["varausId", "nimi", "sähköposti", "puhelin", "varauksenPvm", "varauksenKlo", "varauksenKesto", "hinta", "varausVahvistettu", "varattuTila", "varausLuotu"])
     with open(varaustiedosto, "r", encoding="utf-8") as f:
@@ -56,17 +49,15 @@ def hae_varaukset(varaustiedosto: str) -> list:
 
 def vahvistetut_varaukset(varaukset: list):
     for varaus in varaukset[1:]:
-    #print("- Nimi, Varattu tila, pv.kk.vvvv klo hh.mm")
         if(varaus[8]):
             print(f"- {varaus[1]}, {varaus[9]}, {varaus[4].strftime("%d.%m.%Y")} klo {varaus[5].strftime("%H.%M")}")
 
-    print()    
+    print() 
 
 def pitkat_varaukset(varaukset: list):
     for varaus in varaukset[1:]:
         if(varaus[6]>=3):
             print(f"- {varaus[1]}, {varaus[4].strftime("%d.%m.%Y")} klo {varaus[5].strftime("%H.%M")}, kesto {varaus[6]} h, {varaus[9]}")
-
     print()   
 
 def varausten_vahvitusstatus(varaukset: list):
@@ -87,7 +78,6 @@ def yhteenveto_vahvistuksista(varaukset: list):
         
         else:
             ei_vahvistettuja_varauksia += 1 
-
     print(f"- Vahvistettuja varauksia:{vahvistettuja_varauksia} kpl")
     print(f"- Ei-vahvistettuja varauksia: {ei_vahvistettuja_varauksia} kpl")    
     
@@ -98,17 +88,12 @@ def varausten_kokonaistulot(varaukset: list):
     for varaus in varaukset[1:]:
         if(varaus[8]):
             varausten_tulot += varaus[6]*varaus[7]
-
     print("Vahvistettujen varausten kokonaistulot:", f"{varausten_tulot:.2f}".replace(".", ","), "€")
 
     print()
 
 
 def main():
-    # HUOM! seuraaville riveille ei tarvitse tehdä mitään (A OSA)!
-    # Jos muutat, kommentoi miksi muutit (OSA A)
-    # UUSI OHJE (Osa B vaatii muutoksia -> Esim. tulostuksien (print-funktio) muuttamisen.)
-    # Kutsutaan funkioita hae_varaukset, joka palauttaa kaikki varaukset oikeilla tietotyypeillä
     varaukset = hae_varaukset("varaukset.txt")
     print("1) Vahvistetut varaukset")
     vahvistetut_varaukset(varaukset)
@@ -120,15 +105,6 @@ def main():
     yhteenveto_vahvistuksista(varaukset)
     print("5) Vahvistettujen varausten kokonaistulot")
     varausten_kokonaistulot(varaukset)
-
-    #print(" | ".join(varaukset[0]))
-    #print("------------------------------------------------------------------------")
-    #for varaus in varaukset[1:]:
-    #    print(" | ".join(str(x) for x in varaus))
-    #    tietotyypit = [type(x).__name__ for x in varaus]
-    #   print(" | ".join(tietotyypit))
-    #    print("------------------------------------------------------------------------")
-
 
 
 if __name__ == "__main__":
