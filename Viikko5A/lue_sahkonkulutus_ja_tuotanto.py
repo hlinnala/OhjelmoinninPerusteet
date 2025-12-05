@@ -5,10 +5,7 @@ from datetime import datetime, date
 from typing import List, Dict
 
 def muunna_tiedot(sahko: list) -> list:
-    """
-    Muuttaa tietojen tietotyyppiä
-    """
-
+    """Muuttaa tietojen tietotyyppiä"""
     muutettu_tieto = []
     muutettu_tieto.append(datetime.fromisoformat(sahko[0]))
     muutettu_tieto.append(int(sahko[1]))
@@ -20,11 +17,8 @@ def muunna_tiedot(sahko: list) -> list:
     return muutettu_tieto
 
 def sahkonkulutus_ja_tuotanto(data: str) -> list:
-    """
-    Lukee CSV-tiedoston ja palauttaa rivit
-    Next(f) poistaa esittelytiedon
-    """
-
+    """Lukee CSV-tiedoston ja palauttaa rivit
+    Next(f) poistaa esittelytiedon"""
     sahkodata = []
     with open(data, "r", encoding="utf-8") as f:
         next(f) 
@@ -35,12 +29,9 @@ def sahkonkulutus_ja_tuotanto(data: str) -> list:
     return sahkodata
 
 def paivittainen_data(paiva: str, sahkodata: list) -> int:
-    """
-    Laskee kulutuksen ja tuotannon tiedot 
+    """Laskee kulutuksen ja tuotannon tiedot 
     Palauttaa ne listana
-    Laskee suureen muutoksen watti tunneista(Wh) kilowatteihin tunteihin(kWh)
-    """
-
+    Laskee suureen muutoksen watti tunneista(Wh) kilowatteihin tunteihin(kWh)"""
     vuorokausi = int(paiva.split(".")[0])
     kuukausi = int(paiva.split(".")[1])
     vuosi = int(paiva.split(".")[2])
@@ -65,9 +56,7 @@ def paivittainen_data(paiva: str, sahkodata: list) -> int:
     return tiedot
 
 def main():
-    """"
-    Pääohjelma, jonka tehtävänä on lukea data, laskea yhteenvedot ja tulostaa raportti
-    """
+    """"Pääohjelma, jonka tehtävänä on lukea data, laskea yhteenvedot ja tulostaa raportti"""
     sahkodata = sahkonkulutus_ja_tuotanto("viikko42.csv")
     print("\n\tViikon 42 sähkönkulutus ja -tuotanto (kWh, vaiheittain)", end="\n\n")
     print("Päivä\t\t    Pvm\t\t   Kulutus [kWh]\t Tuotanto [kWh]")
@@ -121,7 +110,7 @@ def main():
     print(f"{sunnuntain_data[2]:.2f}".replace('.', ','), end= "\t")
     print(f"{sunnuntain_data[3]:.2f}".replace('.', ','), end= "\t")
     print(f"{sunnuntain_data[4]:.2f}".replace('.', ','), end= "\t")
-    print(f"{sunnuntain_data[5]:.2f}".replace('.', ','))
+    print(f"{sunnuntain_data[5]:.2f}".replace('.', ','), end ="\n\n")
 
 if __name__ == "__main__":
     main()
