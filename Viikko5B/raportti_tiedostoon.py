@@ -1,7 +1,7 @@
 # Copyright (c) 2025 Henna Linnala
 # License: MIT
 
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from typing import List, Dict
 
 def muunna_tiedot(sahko: list) -> list:
@@ -29,11 +29,15 @@ def sahkonkulutus_ja_tuotanto(data: str) -> List:
     return sahkodata
 
 def suomalainen_pvm(aika: datetime) -> str:
-    """Muuttaa datetime suomalaiseen muotoon pv.kk.vuosi"""
+    """Muuttaa päivämäärän muotoilun suomalaiseen muotoon (pv.kk.vuosi)"""
     suom_pvm = f"{aika.day}.{aika.month}.{aika.year}"
     return suom_pvm
 
 def paivittainen_data(paiva: date, sahkodata: list) -> list:
+    """"Laskee kulutuksen ja tuotannon tiedot 
+    Palauttaa ne listana
+    Laskee suureen muutoksen watti tunneista(Wh) kilowatteihin tunteihin(kWh)"""
+
     kulutus = [0, 0, 0]
     tuotanto = [0, 0, 0]
     for data in sahkodata:
@@ -45,12 +49,14 @@ def paivittainen_data(paiva: date, sahkodata: list) -> list:
             tuotanto[1] += data [5] / 1000
             tuotanto[2] += data[6] / 1000
 
-    return [f"{kulutus[0]:.2f}".replace(".", ","),
+    return [
+            f"{kulutus[0]:.2f}".replace(".", ","),
             f"{kulutus[1]:.2f}".replace(".", ","),
             f"{kulutus[2]:.2f}".replace(".", ","),
             f"{tuotanto[0]:.2f}".replace(".", ","),
             f"{tuotanto[1]:.2f}".replace(".", ","),
-            f"{tuotanto[2]:.2f}".replace(".", ",")]
+            f"{tuotanto[2]:.2f}".replace(".", ",")
+            ]
 
 #def main():
 # kulutus_tuotanto_viikko41 = lue_data("viikko41.csv")

@@ -51,6 +51,7 @@ def paivittainen_data(paiva: date, sahkodata: list) -> list:
             f"{tuotanto[2]:.2f}".replace(".", ",")]
 
 def suomalainen_pvm(paiva: date):
+    """Muuttaa päivämäärän muotoilun suomalaiseen muotoon (pv.kk.vuosi)"""
     suom_pvm= f"{paiva.day}.{paiva.month}.{paiva.year}"
     return suom_pvm
        
