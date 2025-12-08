@@ -16,7 +16,7 @@ def muunna_tiedot(sahko: list) -> list:
     muutettu_tieto.append(int(sahko[6]))
     return muutettu_tieto
 
-def sahkonkulutus_ja_tuotanto(data: str) -> list:
+def sahkonkulutus_ja_tuotanto(data: str) -> List:
     """Lukee CSV-tiedoston ja palauttaa rivit
     Next(f) poistaa esittelytiedon"""
     sahkodata = []
@@ -28,33 +28,32 @@ def sahkonkulutus_ja_tuotanto(data: str) -> list:
             sahkodata.append(muunna_tiedot(sahkon_tiedot))
     return sahkodata
 
-def paivittainen_data(paiva: str, sahkodata: list) -> int:
+def paivittainen_data(paiva: date, sahkodata: list) -> list:
     """Laskee kulutuksen ja tuotannon tiedot 
     Palauttaa ne listana
     Laskee suureen muutoksen watti tunneista(Wh) kilowatteihin tunteihin(kWh)"""
-    vuorokausi = int(paiva.split(".")[0])
-    kuukausi = int(paiva.split(".")[1])
-    vuosi = int(paiva.split(".")[2])
-    tiedot = []
     kulutus = [0, 0, 0]
     tuotanto = [0, 0, 0]
     for data in sahkodata:
-        if data[0].date() == date(vuosi, kuukausi, vuorokausi):
-            kulutus[0] += data[1] 
-            kulutus[1] += data[2] 
-            kulutus[2] += data[3] 
-            tuotanto[0] += data[4] 
-            tuotanto[1] += data [5]
-            tuotanto[2] += data[6] 
+        if data[0].date() == paiva:
+            kulutus[0] += data[1] / 1000
+            kulutus[1] += data[2] / 1000
+            kulutus[2] += data[3] / 1000
+            tuotanto[0] += data[4] / 1000
+            tuotanto[1] += data [5] / 1000
+            tuotanto[2] += data[6] / 1000 
 
-    tiedot.append(kulutus[0]/1000)
-    tiedot.append(kulutus[1]/1000)
-    tiedot.append(kulutus[2]/1000)
-    tiedot.append(tuotanto[0]/1000)
-    tiedot.append(tuotanto[1]/1000)
-    tiedot.append(tuotanto[2]/1000)
-    return tiedot
+    return [f"{kulutus[0]:.2f}".replace(".", ","),
+            f"{kulutus[1]:.2f}".replace(".", ","),
+            f"{kulutus[2]:.2f}".replace(".", ","),
+            f"{tuotanto[0]:.2f}".replace(".", ","),
+            f"{tuotanto[1]:.2f}".replace(".", ","),
+            f"{tuotanto[2]:.2f}".replace(".", ",")]
 
+def suomalainen_pvm(paiva: date):
+    suom_pvm= f"{paiva.day}.{paiva.month}.{paiva.year}"
+    return suom_pvm
+       
 def main():
     """"Pääohjelma, jonka tehtävänä on lukea data, laskea yhteenvedot ja tulostaa raportti"""
     sahkodata = sahkonkulutus_ja_tuotanto("viikko42.csv")
@@ -62,55 +61,13 @@ def main():
     print("Päivä\t\t    Pvm\t\t   Kulutus [kWh]\t Tuotanto [kWh]")
     print("\t\t(pv.kk.vvvv) \tv1\tv2\tv3  \tv1\tv2\tv3")
     print("---------------------------------------------------------------------------")
-    maanantain_data = paivittainen_data("13.10.2025", sahkodata)
-    print("Maanantai\t" + "13.10.2025" +"   ", f"{maanantain_data[0]:.2f}".replace('.', ','), end= "\t")
-    print(f"{maanantain_data[1]:.2f}".replace('.', ','), end= "\t")
-    print(f"{maanantain_data[2]:.2f}".replace('.', ','), end= "\t")
-    print(f"{maanantain_data[3]:.2f}".replace('.', ','), end= "\t")
-    print(f"{maanantain_data[4]:.2f}".replace('.', ','), end= "\t")
-    print(f"{maanantain_data[5]:.2f}".replace('.', ','))
-    tiistain_data = paivittainen_data("14.10.2025", sahkodata)
-    print("Tiistai\t\t" + "14.10.2025" +"   ", f"{tiistain_data[0]:.2f}".replace('.', ','), end= "\t")
-    print(f"{tiistain_data[1]:.2f}".replace('.', ','), end= "\t")
-    print(f"{tiistain_data[2]:.2f}".replace('.', ','), end= "\t")
-    print(f"{tiistain_data[3]:.2f}".replace('.', ','), end= "\t")
-    print(f"{tiistain_data[4]:.2f}".replace('.', ','), end= "\t")
-    print(f"{tiistain_data[5]:.2f}".replace('.', ','))
-    keskiviikon_data = paivittainen_data("15.10.2025", sahkodata)
-    print("Keskiviikko\t" + "15.10.2025" +"   ", f"{keskiviikon_data[0]:.2f}".replace('.', ','), end= "\t")
-    print(f"{keskiviikon_data[1]:.2f}".replace('.', ','), end= "\t")
-    print(f"{keskiviikon_data[2]:.2f}".replace('.', ','), end= "\t")
-    print(f"{keskiviikon_data[3]:.2f}".replace('.', ','), end= "\t")
-    print(f"{keskiviikon_data[4]:.2f}".replace('.', ','), end= "\t")
-    print(f"{keskiviikon_data[5]:.2f}".replace('.', ','))
-    torstain_data = paivittainen_data("16.10.2025", sahkodata)
-    print("Torstai\t\t" + "16.10.2025" +"   ", f"{torstain_data[0]:.2f}".replace('.', ','), end= "\t")
-    print(f"{torstain_data[1]:.2f}".replace('.', ','), end= "\t")
-    print(f"{torstain_data[2]:.2f}".replace('.', ','), end= "\t")
-    print(f"{torstain_data[3]:.2f}".replace('.', ','), end= "\t")
-    print(f"{torstain_data[4]:.2f}".replace('.', ','), end= "\t")
-    print(f"{torstain_data[5]:.2f}".replace('.', ','))
-    perjantain_data = paivittainen_data("17.10.2025", sahkodata)
-    print("Perjantai\t" + "17.10.2025" +"   ", f"{perjantain_data[0]:.2f}".replace('.', ','), end= "\t")
-    print(f"{perjantain_data[1]:.2f}".replace('.', ','), end= "\t")
-    print(f"{perjantain_data[2]:.2f}".replace('.', ','), end= "\t")
-    print(f"{perjantain_data[3]:.2f}".replace('.', ','), end= "\t")
-    print(f"{perjantain_data[4]:.2f}".replace('.', ','), end= "\t")
-    print(f"{perjantain_data[5]:.2f}".replace('.', ','))
-    lauantain_data = paivittainen_data("18.10.2025", sahkodata)
-    print("Lauantai\t" + "18.10.2025" +"   ", f"{lauantain_data[0]:.2f}".replace('.', ','), end= "\t")
-    print(f"{lauantain_data[1]:.2f}".replace('.', ','), end= "\t")
-    print(f"{lauantain_data[2]:.2f}".replace('.', ','), end= "\t")
-    print(f"{lauantain_data[3]:.2f}".replace('.', ','), end= "\t")
-    print(f"{lauantain_data[4]:.2f}".replace('.', ','), end= "\t")
-    print(f"{lauantain_data[5]:.2f}".replace('.', ','))
-    sunnuntain_data = paivittainen_data("19.10.2025", sahkodata)
-    print("Sunnuntai\t" + "19.10.2025" +"   ", f"{sunnuntain_data[0]:.2f}".replace('.', ','), end= "\t")
-    print(f"{sunnuntain_data[1]:.2f}".replace('.', ','), end= "\t")
-    print(f"{sunnuntain_data[2]:.2f}".replace('.', ','), end= "\t")
-    print(f"{sunnuntain_data[3]:.2f}".replace('.', ','), end= "\t")
-    print(f"{sunnuntain_data[4]:.2f}".replace('.', ','), end= "\t")
-    print(f"{sunnuntain_data[5]:.2f}".replace('.', ','), end ="\n\n")
+    print("Maanantai\t" + (suomalainen_pvm(date(2025, 10, 13))) + "\t" + "\t".join(paivittainen_data(date(2025, 10, 13), sahkodata)))
+    print("Tiistai\t\t" + (suomalainen_pvm(date(2025, 10, 14))) + "\t"+ "\t".join(paivittainen_data(date(2025, 10, 14), sahkodata)))
+    print("Keskiviikko\t" + (suomalainen_pvm(date(2025, 10, 15))) + "\t"+ "\t".join(paivittainen_data(date(2025, 10, 15), sahkodata)))
+    print("Torstai\t\t" + (suomalainen_pvm(date(2025, 10, 16))) + "\t"+ "\t".join(paivittainen_data(date(2025, 10, 16), sahkodata)))
+    print("Perjantai\t" + (suomalainen_pvm(date(2025, 10, 17))) + "\t"+ "\t".join(paivittainen_data(date(2025, 10, 17), sahkodata)))
+    print("Lauantai\t" + (suomalainen_pvm(date(2025, 10, 18))) + "\t"+ "\t".join(paivittainen_data(date(2025, 10, 18), sahkodata)))
+    print("Sunnuntai\t" + (suomalainen_pvm(date(2025, 10, 19))) + "\t"+ "\t".join(paivittainen_data(date(2025, 10, 19), sahkodata)), end="\n\n")
 
 if __name__ == "__main__":
     main()
