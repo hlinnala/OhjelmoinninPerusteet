@@ -48,18 +48,16 @@ def paivittainen_data(paiva: date, sahkodata: list) -> list:
             tuotanto[0] += data[4] / 1000
             tuotanto[1] += data [5] / 1000
             tuotanto[2] += data[6] / 1000
-    kulutus[0] = f"{kulutus[0]:.2f}".replace(".", ",")
-    kulutus[1] = f"{kulutus[1]:.2f}".replace(".", ",")
-    kulutus[2] = f"{kulutus[2]:.2f}".replace(".", ",")
-    tuotanto[0] = f"{tuotanto[0]:.2f}".replace(".", ",")
-    tuotanto[1] = f"{tuotanto[1]:.2f}".replace(".", ",")
-    tuotanto[2] = f"{tuotanto[2]:.2f}".replace(".", ",")
-
-    return f"{kulutus[0]}\t{kulutus[1]}\t{kulutus[2]}\t{tuotanto[0]}\t{tuotanto[1]}\t{tuotanto[2]}" 
-    #Tämän returnin kanssa sai taistella, jottei arvot tule ['0,00']['0,00']['0,00]..etc.-muodossa tai muussa tyhmässä muodossa
+            
+    return [f"{kulutus[0]:.2f}".replace(".", ","),
+        f"{kulutus[1]:.2f}".replace(".", ","),
+        f"{kulutus[2]:.2f}".replace(".", ","),
+        f"{tuotanto[0]:.2f}".replace(".", ","),
+        f"{tuotanto[1]:.2f}".replace(".", ","),
+        f"{tuotanto[2]:.2f}".replace(".", ","),]
 
 def viikkoraportti(viikkonumero: int, aloitus_pvm: datetime.date, sahkodata: list) -> str:
-    """ Laskee viikkoraportin annettuihin viikonpäiviin ja muodostaa
+    """ Laskee viikkoraportin annettuihin viikonpäiviin
     Parametrit:
     viikkonumero (int): Raportoivan viikon numero
     aloituspv (datetime.date): Viikon ensimmäinen päivämäärä
@@ -73,30 +71,29 @@ def viikkoraportti(viikkonumero: int, aloitus_pvm: datetime.date, sahkodata: lis
     viikon_raportti += "\t\t\t\t\t\tv1\t\tv2\t\tv3\t\tv1\t\tv2\t\tv3\n"
     viikon_raportti += "----------------------------------------------------------------------------\n"
     for i, paiva in enumerate(viikonpaivat):
-        paiva = aloitus_pvm + timedelta(days=i)
+        pvm = aloitus_pvm+timedelta(days=i)
         if viikonpaivat[i] == viikonpaivat[6]: #Woo sain tämän toimimaan, ihan tyyli syistä...halusin sunnuntain ja "---" väliin isomman välin
-            viikon_raportti += f"{viikonpaivat[i]}\t{suomalainen_pvm(paiva)}\t{paivittainen_data(paiva, sahkodata)}\n\n"
+            viikon_raportti += paiva + "\t"+ (suomalainen_pvm(pvm))+"\t" + "\t".join(paivittainen_data(pvm, sahkodata)) + "\n\n"
         else:
-            viikon_raportti += f"{viikonpaivat[i]}\t{suomalainen_pvm(paiva)}\t{paivittainen_data(paiva, sahkodata)}\n"
+            viikon_raportti += paiva + "\t"+ (suomalainen_pvm(pvm))+"\t" + "\t".join(paivittainen_data(pvm, sahkodata)) + "\n"
 
     viikon_raportti += "----------------------------------------------------------------------------\n"
     return viikon_raportti
 
-
 def main():
     """ Ohjelman pääfunktio (main) lukee datan annetuista tiedostoista. Luo raportit. Kirjoittaa ja tallentaa tiedot txt-tiedostoon."""
-    Viikko41 = sahkonkulutus_ja_tuotanto("viikko41.csv")
-    Viikko42 = sahkonkulutus_ja_tuotanto("viikko42.csv")
-    Viikko43 = sahkonkulutus_ja_tuotanto("viikko43.csv")
+    viikko41 = sahkonkulutus_ja_tuotanto("viikko41.csv")
+    viikko42 = sahkonkulutus_ja_tuotanto("viikko42.csv")
+    viikko43 = sahkonkulutus_ja_tuotanto("viikko43.csv")
 
-    raportti_viikko_41 = viikkoraportti(41, date(2025, 10, 6), Viikko41)
-    raportti_viikko_42 = viikkoraportti(42, date(2025, 10, 13), Viikko42)
-    raportti_viikko_43 = viikkoraportti(43, date(2025, 10, 20), Viikko43)
+    raportti_viikko41 = viikkoraportti(41, date(2025, 10, 6), viikko41)
+    raportti_viikko42 = viikkoraportti(42, date(2025, 10, 13), viikko42)
+    raportti_viikko43 = viikkoraportti(43, date(2025, 10, 20), viikko43)
 
     with open("yhteenveto.txt", "w", encoding="utf-8") as f:
-        f.write(raportti_viikko_41)
-        f.write(raportti_viikko_42)
-        f.write(raportti_viikko_43)
+        f.write(raportti_viikko41)
+        f.write(raportti_viikko42)
+        f.write(raportti_viikko43)
 
     print("Raportti valmis!")
 
