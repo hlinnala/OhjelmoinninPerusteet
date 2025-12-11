@@ -66,18 +66,18 @@ def viikkoraportti(viikkonumero: int, aloitus_pvm: datetime.date, sahkodata: lis
 
     viikonpaivat = ["Maanantai", "Tiistai\t", "Keskiviikko", "Torstai\t", "Perjantai", "Lauantai", "Sunnuntai"]
 
-    viikon_raportti = f"\nViikon {viikkonumero} sähkönkulutus ja -tuotanto (kWh, vaiheittain)\n\n"
-    viikon_raportti += "Viikonäivä\tPäivämäärä\tKulutus [kWh]\t\tTuotanto [kWh]\n"
-    viikon_raportti += "\t\t\t\t\t\tv1\t\tv2\t\tv3\t\tv1\t\tv2\t\tv3\n"
-    viikon_raportti += "----------------------------------------------------------------------------\n"
+    viikon_raportti = f"\n\t\tViikon {viikkonumero} sähkönkulutus ja -tuotanto (kWh, vaiheittain)\n\n"
+    viikon_raportti += "Viikonäivä\t\tPäivämäärä\t\t\tKulutus [kWh]\t\t\tTuotanto [kWh]\n"
+    viikon_raportti += "\t\t\t    (pv.kk.vvvv) \t v1\t\t v2\t\t v3\t\t v1\t\t v2\t\t v3\n"
+    viikon_raportti += "------------------------------------------------------------------------------\n"
     for i, paiva in enumerate(viikonpaivat):
         pvm = aloitus_pvm+timedelta(days=i)
         if viikonpaivat[i] == viikonpaivat[6]: #Woo sain tämän toimimaan...halusin sunnuntain ja "---" väliin isomman välin
-            viikon_raportti += paiva + "\t"+ (suomalainen_pvm(pvm))+"\t" + "\t".join(paivittainen_data(pvm, sahkodata)) + "\n\n"
+            viikon_raportti += paiva + "\t\t"+ (suomalainen_pvm(pvm))+"\t\t" + "\t".join(paivittainen_data(pvm, sahkodata)) + "\n\n"
         else:
-            viikon_raportti += paiva + "\t"+ (suomalainen_pvm(pvm))+"\t" + "\t".join(paivittainen_data(pvm, sahkodata)) + "\n"
+            viikon_raportti += paiva + "\t\t"+ (suomalainen_pvm(pvm))+"\t\t" + "\t".join(paivittainen_data(pvm, sahkodata)) + "\n"
 
-    viikon_raportti += "----------------------------------------------------------------------------\n"
+    viikon_raportti += "------------------------------------------------------------------------------\n"
     return viikon_raportti
 
 def main():
