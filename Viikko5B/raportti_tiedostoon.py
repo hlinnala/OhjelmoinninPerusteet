@@ -72,7 +72,7 @@ def viikkoraportti(viikkonumero: int, aloitus_pvm: datetime.date, sahkodata: lis
     viikon_raportti += "----------------------------------------------------------------------------\n"
     for i, paiva in enumerate(viikonpaivat):
         pvm = aloitus_pvm+timedelta(days=i)
-        if viikonpaivat[i] == viikonpaivat[6]: #Woo sain tämän toimimaan, ihan tyyli syistä...halusin sunnuntain ja "---" väliin isomman välin
+        if viikonpaivat[i] == viikonpaivat[6]: #Woo sain tämän toimimaan...halusin sunnuntain ja "---" väliin isomman välin
             viikon_raportti += paiva + "\t"+ (suomalainen_pvm(pvm))+"\t" + "\t".join(paivittainen_data(pvm, sahkodata)) + "\n\n"
         else:
             viikon_raportti += paiva + "\t"+ (suomalainen_pvm(pvm))+"\t" + "\t".join(paivittainen_data(pvm, sahkodata)) + "\n"
@@ -81,7 +81,8 @@ def viikkoraportti(viikkonumero: int, aloitus_pvm: datetime.date, sahkodata: lis
     return viikon_raportti
 
 def main():
-    """ Ohjelman pääfunktio (main) lukee datan annetuista tiedostoista. Luo raportit. Kirjoittaa ja tallentaa tiedot txt-tiedostoon."""
+    """ Ohjelman pääfunktio (main) lukee datan annetuista tiedostoista. Luo raportit. 
+    Kirjoittaa ja tallentaa tiedot txt-tiedostoon."""
     viikko41 = sahkonkulutus_ja_tuotanto("viikko41.csv")
     viikko42 = sahkonkulutus_ja_tuotanto("viikko42.csv")
     viikko43 = sahkonkulutus_ja_tuotanto("viikko43.csv")
