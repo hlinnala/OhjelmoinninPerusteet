@@ -1,32 +1,42 @@
 # Copyright (c) 2025 Henna Linnala
 # License: MIT
 
-#Käytössä sanakirja!
-#Miksi ovat selkeämpiä kuin listat...jaaa-a...
-#Olivat selkeämpi kutsua...
-#Muuttaessa koodia joutui monta kertaa palaamaan etsimään, mikä varauksen kohta olikaan tämä ja missä se on
-#Varsinkin, kun ei muistanut mitä tietoa etsi, etsinkö nimeä, hintaa, etc.
-#Oli oikeastaan hauskempi luoda
+"""Kokeillaan olioita"""
 from datetime import datetime
 from typing import Dict, List
 
-def muunna_varaustiedot(varaus_lista: List[str]) -> Dict:
-    """Muuttaa tietojen tietotyyppiä ja luo niistä sanakirjan"""
-    return {
-        "varaus_id": int(varaus_lista[0]),
-        "nimi": varaus_lista[1],
-        "sahkoposti": varaus_lista[2],
-        "puhelin": varaus_lista[3],
-        "paiva": datetime.strptime(varaus_lista[4], "%Y-%m-%d").date(),
-        "aika": datetime.strptime(varaus_lista[5], "%H:%M").time(),
-        "kesto": int(varaus_lista[6]),
-        "hinta": float(varaus_lista[7]),
-        "vahvistettu": (varaus_lista[8].lower() == "true"),
-        "kohde": varaus_lista[9],
-        "luotu": datetime.strptime(varaus_lista[10], "%Y-%m-%d %H:%M:%S")    
-    }
+def muunna_varaustiedot(varaus_lista: list[str]) -> Varaus:
+    """Muuttaa tietojen tietotyyppiä ja luo niistä olion"""
+    return Varaus(
+        varaus_id=int(varaus_lista[0]),
+        nimi=varaus_lista[1],
+        sahkoposti=varaus_lista[2],
+        puhelin=varaus_lista[3],
+        paiva=datetime.strptime(varaus_lista[4], "%Y-%m-%d").date(),
+        aika=datetime.strptime(varaus_lista[5], "%H:%M").time(),
+        kesto=int(varaus_lista[6]),
+        hinta=float(varaus_lista[7]),
+        vahvistettu=(varaus_lista[8].lower() == "true"),
+        kohde=varaus_lista[9],
+        luotu=datetime.strptime(varaus_lista[10], "%Y-%m-%d %H:%M:%S")    
+    )
+class Varaus:
+    def __init__(self, varaus_id, nimi, sahkoposti, puhelin,
+                 paiva, aika, kesto, hinta,
+                 vahvistettu, kohde, luotu):
+        self.varaus_id = varaus_id
+        self.nimi = nimi
+        self.sahkoposti = sahkoposti
+        self.puhelin = puhelin
+        self.paiva = paiva
+        self.aika = aika
+        self.kesto = kesto
+        self.hinta = hinta
+        self.vahvistettu = vahvistettu
+        self.kohde = kohde
+        self.luotu = luotu
 
-def hae_varaukset(varaus_lista: str) -> List[Dict]:
+def hae_varaukset(varaus_lista: str) -> List[Varaus]:
     """Lukee CSV-tiedoston ja palauttaa rivit"""
     varaukset = []
     varaukset.append(["varaus_id", "nimi", "sähköposti", "puhelin", "paiva", "aika", "kesto", "hinta", "vahvistettu", "kohde", "luotu"])
@@ -37,10 +47,11 @@ def hae_varaukset(varaus_lista: str) -> List[Dict]:
             varaukset.append(muunna_varaustiedot(varaustiedot))
     return varaukset
 
-def vahvistetut_varaukset(varaukset: list):
+def vahvistetut_varaukset(varaukset:List[Varaus]):
     for varaus in varaukset[1:]:
-        if(varaus["vahvistettu"]):
-            print(f"- {varaus["nimi"]}, {varaus["kohde"]}, {varaus["paiva"].strftime('%d.%m.%Y')} klo {varaus["aika"].strftime('%H.%M')}")
+        if varaus.is_confirmed():
+            print(f"- {varaus.nimi}, {varaus.kohde}, {varaus.paiva.strftime('%d.%m.%Y')}")
+            return self.vahvistettu
 
     print()
 

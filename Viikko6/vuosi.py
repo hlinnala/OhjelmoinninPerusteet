@@ -12,7 +12,7 @@ def muunna_tiedot(sahko: list) -> list:
         float(sahko[2].replace(",", ".")),
         float(sahko[3].replace(",", ".")),]
 
-def sahkonkulutus_ja_tuotanto(data: str) -> List:
+def vuosidata(data: str) -> List:
     """Lukee CSV-tiedoston ja palauttaa rivit
     Next(f) poistaa esittelytiedon"""
     sahkodata = []
@@ -22,32 +22,42 @@ def sahkonkulutus_ja_tuotanto(data: str) -> List:
             sahko = sahko.split(';')
             sahkodata.append(muunna_tiedot(sahko))
     return sahkodata
-def raportti_tiedostoon(raportti: str):
-    """
-    Kirjoittaa annetun sisällön tiedostoon
 
+def raportti_tiedostoon(raportti: str):
+    """Kirjoittaa annetun sisällön txt -tiedostoon
     Parametrit:
-     raportti (str): raporttiteksti
-    """
+     raportti (str): raporttiteksti"""
     with open("raportti.txt", "w", encoding="utf-8") as f:
         f.write(raportti)
 
-def raportti_aikavali(alkupaiva: datetime.date, loppupaiva: datetime.date, tietokanta: list) -> str:
+def suomalainen_pvm_alku(alku: datetime.date) -> str:
+    """Muuttaa päivämäärän muotoilun suomalaiseen muotoon (pv.kk.vuosi)"""
+    suom_pvma = f"{alku.day}.{alku.month}.{alku.year}"
+    return suom_pvma
+
+def suomalainen_pvm_loppu(loppu: datetime.date) -> str:
+    """Muuttaa päivämäärän muotoilun suomalaiseen muotoon (pv.kk.vuosi)"""
+    suom_pvml = f"{loppu.day}.{loppu.month}.{loppu.year}"
+    return suom_pvml
+
+
+def raportti_aikavali(suom_pvma: datetime.date, suom_pvml: datetime.date, sahkodata: list) -> str:
+    raportti = "------------------------------------------------------------------------------\n"
+    raportti += f"{suomalainen_pvm_alku}"
+    raportti += f"{suomalainen_pvm_loppu}"
+    raportti += "------------------------------------------------------------------------------\n"
     return True
 
-
-def main():
-    "Ohjelman pääfunktio "
-    # Luetaan data tiedostosta
-    kulutus_tuotanto = sahkonkulutus_ja_tuotanto("2025.csv")
-    #print(len(kulutusTuotanto2025))
-
-    while True:
+def valinnat(paavalikko: bool, alavalikko: bool) -> List:
+    kulutus_tuotanto = vuosidata("2025.csv")
+    while True and paavalikko:
+        print("-------------------------------------------------------")
         print("Valitse raporttityyppi:")
         print("1) Päiväkohtainen yhteenveto aikaväliltä")
         print("2) Kuukausikohtainen yhteenveto yhdelle kuukaudelle")
         print("3) Vuoden 2025 kokonaisyhteenveto")
         print("4) Lopeta ohjelma")
+        print("-------------------------------------------------------")
         ensimmainen_valinta = int(input("Anna valinta (numero 1-4): "))
         if ensimmainen_valinta == 1:
             alkupaiva = input("Anna alkupäivä (pv.kk.vvvv): ")
@@ -57,18 +67,20 @@ def main():
             kuukausi = input("Anna kuukauden numero (1–12): ")
             print(kulutus_tuotanto[1])
         elif ensimmainen_valinta == 3:
-            print("vuosiraportti tulostuu...")
+            print("Vuosiraportti tulostuu...")
         elif ensimmainen_valinta == 4:
             print("Lopetaan ohjelma...")
             break
         else:
             continue
 
-        print("---------------------------------------------------------")
+    while True and alavalikko:
+        print("-------------------------------------------------------")
         print("Mitä haluat tehdä seuraavaksi?")
         print("1) Kirjoita raportti tiedostoon raportti.txt")
         print("2) Luo uusi raportti")
         print("3) Lopeta")
+        print("-------------------------------------------------------")
         toinen_valinta = int(input("Anna valinta (numero 1-3): "))
         if toinen_valinta == 1:
             raportti_tiedostoon(str(kulutus_tuotanto[0][1]))
@@ -79,10 +91,8 @@ def main():
             break
         else:
             continue
-
-        print("---------------------------------------------------------")
-
-    #print("Valitsit ", ensimmainen_valinta)
+def main():
+    "Ohjelman pääfunktio "
 
 
 if __name__ == "__main__":
