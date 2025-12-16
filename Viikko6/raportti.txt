@@ -1,0 +1,9 @@
+--------------------------------------------------------
+
+		Raportti koko vuodelta 2025
+	Vuoden 2025 kokonaiskulutus: 7396,84 kWh
+	Vuoden 2025 kokonaistuotanto: 2922,38 kWh
+	Vuoden 2025 keskilämpötila: 7,83 °C
+
+--------------------------------------------------------
+
